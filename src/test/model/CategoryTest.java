@@ -6,14 +6,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryTest {
     private Category categoryTest;
+    private Log logTest;
+
+    Category one = new Category("one", 0);
+    Category two = new Category("two", 0);
+    Category three = new Category("three", 0);
+    Category four = new Category("four", 0);
+    Category five = new Category("five", 0);
 
     @BeforeEach
     void runBefore() {
         categoryTest = new Category("Cooking", 0);
+        logTest = new Log(one, two, three, four, five);
     }
 
     @Test
-    void testConstructor() {
+    void testCategoryConstructor() {
         assertEquals("Cooking", categoryTest.getName());
         assertEquals(0, categoryTest.getValue());
     }
@@ -44,5 +52,9 @@ class CategoryTest {
         assertEquals(100, categoryTest.addValue(29.5));
     }
 
-
+    @Test
+    void testLogConstructor() {
+        assertEquals(1, logTest.getID());
+        assertEquals(5, logTest.getLength());
+    }
 }

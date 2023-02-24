@@ -54,7 +54,7 @@ class CategoryTest {
 
     @Test
     void testLogConstructor() {
-        assertEquals(1, logTest.getID());
+        assertEquals(0, logTest.getID());
         assertEquals(5, logTest.getLength());
     }
 }

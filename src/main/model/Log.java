@@ -11,7 +11,8 @@ public class Log {
 
     // EFFECTS: creates new log
     public Log(Category one, Category two, Category three, Category four, Category five) {
-        id = nextLog++;
+        id = nextLog + 1;
+        nextLog++;
         log = new LinkedList<>();
         log.add(one);
         log.add(two);
@@ -20,6 +21,15 @@ public class Log {
         log.add(five);
     }
 
+    public int getID() {
+        return id;
+    }
+
+    public int getLength() {
+        return log.size();
+    }
+
+    // EFFECTS: prints out each category within a log
     public void readLog() {
         System.out.println("Log " + id + ":\n");
         for (Category c : log) {

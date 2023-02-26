@@ -29,11 +29,7 @@ public class Log {
         return log.size();
     }
 
-    // EFFECTS: prints out each category within a log
-    public void readLog() {
-        System.out.println("Log " + id + ":\n");
-        for (Category c : log) {
-            System.out.println(c.getName() + ": " + c.getValue());
-        }
+    public Category get(int i) {
+        return log.get(i);
     }
 }

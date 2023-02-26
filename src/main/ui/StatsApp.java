@@ -43,7 +43,7 @@ public class StatsApp {
             }
         }
         Log log = new Log(categoryOne, categoryTwo, categoryThree, categoryFour, categoryFive);
-        log.readLog();
+        readLog(log);
     }
 
     // MODIFIES: this
@@ -101,30 +101,35 @@ public class StatsApp {
     }
 
     // EFFECT: add to the given category
-    private double doAddValue(Category category) {
+    private void doAddValue(Category category) {
         System.out.println("Input amount to add");
         inputDouble = new Scanner(System.in); // not sure why I have to do this
         double amount = inputDouble.nextDouble();
         System.out.println(category.getName() + ": " + category.addValue(amount));
-        return category.addValue(amount);
     }
 
     // EFFECT: minus from the given category
-    private double doSubValue(Category category) {
+    private void doSubValue(Category category) {
         System.out.println("Input amount to subtract");
         inputDouble = new Scanner(System.in); // not sure why I have to do this
         double amount = inputDouble.nextDouble();
         System.out.println(category.getName() + ": " + category.subValue(amount));
-        return category.subValue(amount);
     }
 
     // EFFECT: set the given category's value
-    private double doSetValue(Category category) {
+    private void doSetValue(Category category) {
         System.out.println("Input amount to set to");
         inputDouble = new Scanner(System.in); // not sure why I have to do this
         double amount = inputDouble.nextDouble();
         System.out.println(category.getName() + ": " + category.setValue(amount));
-        return category.setValue(amount);
+    }
+
+    // EFFECTS: prints out each category within a log
+    public void readLog(Log log) {
+        System.out.println("Log " + log.getID() + ":\n");
+        for (int i = 0; i < log.getLength(); i++) {
+            System.out.println(log.get(i).getName() + ": " + log.get(i).getValue());
+        }
     }
 
 }

@@ -29,6 +29,7 @@ public class Log {
         return log.size();
     }
 
+    // Had to manually create a getter
     public Category get(int i) {
         return log.get(i);
     }

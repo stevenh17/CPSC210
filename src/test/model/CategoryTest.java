@@ -57,4 +57,10 @@ class CategoryTest {
         assertEquals(1, logTest.getID());
         assertEquals(5, logTest.getLength());
     }
+
+    @Test
+    void testGet() {
+        assertEquals(two, logTest.get(1));
+        assertEquals(five, logTest.get(4));
+    }
 }

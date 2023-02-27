@@ -24,10 +24,11 @@ As a user, I want to create a category, and add it to a list of categories on my
 
 As a user, I want to select a category and adjust its point value.
 
+As a user, I want to be able to display all the categories' point values
+
+
+
+## Features to be added 
 As a user, I want to see a history of my category adjustments.
 
 As a user, I want to see statistics on category growth rates.
-
-add logs to a category
-smth that displays changes of a category
-both non trivial so log could have a date of adjustment, points, 

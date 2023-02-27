@@ -8,7 +8,11 @@ public class Category {
     // EFFECT: name is set to categoryName and value is set to categoryValue
     public Category(String categoryName, double categoryValue) {
         name = categoryName;
-        value = categoryValue;
+        if (categoryValue >= 0) {
+            value = categoryValue;
+        } else {
+            value = 0;
+        }
     }
 
     public String getName() {

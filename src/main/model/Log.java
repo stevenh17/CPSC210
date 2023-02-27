@@ -29,8 +29,13 @@ public class Log {
         return log.size();
     }
 
-    // Had to manually create a getter
     public Category get(int i) {
         return log.get(i);
     }
+
+    //public LinkedList<Category> replaceCategory(Category categorySub, Category categoryAdd) {
+        //log.remove(categorySub);
+        //log.add(categoryAdd);
+        //return log;
+    //}
 }

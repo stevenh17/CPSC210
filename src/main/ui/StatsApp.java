@@ -100,6 +100,7 @@ public class StatsApp {
         }
     }
 
+    // MODIFIES: this
     // EFFECT: add to the given category
     private void doAddValue(Category category) {
         System.out.println("Input amount to add");
@@ -108,6 +109,7 @@ public class StatsApp {
         System.out.println(category.getName() + ": " + category.addValue(amount));
     }
 
+    // MODIFIES: this
     // EFFECT: minus from the given category
     private void doSubValue(Category category) {
         System.out.println("Input amount to subtract");
@@ -116,6 +118,7 @@ public class StatsApp {
         System.out.println(category.getName() + ": " + category.subValue(amount));
     }
 
+    // MODIFIES: this
     // EFFECT: set the given category's value
     private void doSetValue(Category category) {
         System.out.println("Input amount to set to");

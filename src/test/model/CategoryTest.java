@@ -24,6 +24,9 @@ class CategoryTest {
     void testCategoryConstructor() {
         assertEquals("Cooking", categoryTest.getName());
         assertEquals(0, categoryTest.getValue());
+        Category categoryTestOne = new Category("Cooking", -5);
+        assertEquals(0, categoryTestOne.getValue());
+
     }
 
     @Test
@@ -63,4 +66,10 @@ class CategoryTest {
         assertEquals(two, logTest.get(1));
         assertEquals(five, logTest.get(4));
     }
+
+    //void replaceCategoryTest() {
+        //assertEquals(5, logTest.getLength());
+        //assertEquals(5, logTest.replaceCategory(one, two).size());
+        //assertEquals(two ,logTest.get(0));
+    //}
 }

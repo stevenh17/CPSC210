@@ -22,9 +22,15 @@ Example stats circle *categories*:
 
 As a user, I want to create a category, and add it to a list of categories on my stats circle.
 
-As a user, I want to select a category and adjust its point value.
+As a user, I want to select a category and add to its point value.
+
+As a user, I want to select a category and subtract from its point value.
 
 As a user, I want to be able to display all the categories' point values
+
+As a user, I want to choose when to save the application to file
+
+As a user, I want to be able to reload the app to a saved point 
 
 
 

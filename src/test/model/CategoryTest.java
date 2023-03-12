@@ -17,7 +17,7 @@ class CategoryTest {
     @BeforeEach
     void runBefore() {
         categoryTest = new Category("Cooking", 0);
-        logTest = new Log(one, two, three, four, five);
+        logTest = new Log();
     }
 
     @Test

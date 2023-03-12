@@ -10,15 +10,16 @@ public class Log {
     LinkedList<Category> log;
 
     // EFFECTS: creates new log
-    public Log(Category one, Category two, Category three, Category four, Category five) {
+    public Log() {
         id = nextLog + 1;
         nextLog++;
         log = new LinkedList<>();
-        log.add(one);
-        log.add(two);
-        log.add(three);
-        log.add(four);
-        log.add(five);
+    }
+
+    public void displayCurrentLog() {
+        for (Category i : log) {
+            System.out.println(i.getName());
+        }
     }
 
     public int getID() {
@@ -33,9 +34,11 @@ public class Log {
         return log.get(i);
     }
 
-    //public LinkedList<Category> replaceCategory(Category categorySub, Category categoryAdd) {
-        //log.remove(categorySub);
-        //log.add(categoryAdd);
-        //return log;
-    //}
+    public Boolean add(Category i) {
+        return log.add(i);
+    }
+
+    public Category removeLast() {
+        return log.removeLast();
+    }
 }

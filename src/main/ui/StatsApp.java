@@ -5,72 +5,74 @@ import model.*;
 import java.util.Scanner;
 
 public class StatsApp {
-    private Category categoryOne;
-    private Category categoryTwo;
-    private Category categoryThree;
-    private Category categoryFour;
-    private Category categoryFive;
 
+    private Log categoryList;
     private Scanner inputString;
     private Scanner inputDouble;
+    private Log log;
+    private Record record = new Record();
 
-    // EFFECTS: runs the application
     @SuppressWarnings("methodlength")
+    // EFFECTS: runs the application
     public StatsApp() {
-        createCategories();
+        if (record.getLength() == 0) {
+            createCategories();
+        }
+        // wonder why this if statement is not properly executing? confident that getLength should return 1 based on
+        // the print statement below on line 38?
         boolean loopContinues = true;
         while (loopContinues) {
             displayCategories();
-            String command = inputString.next();
-            command = command.toLowerCase();
+            String command = inputString.next().toLowerCase();
+            for (int i = 0; i < categoryList.getLength(); i++) {
+                if (command.equals(categoryList.get(i).getName().toLowerCase())) {
+                    editCategory(categoryList.get(i));
+                }
+            }
+            if (command.equals("r")) {
+                readLog(categoryList);
+            }
+            if (command.equals("s")) {
+                saveRecord(categoryList);
+                loopContinues = false;
+                System.out.println(record.getLength());
+                new StatsApp();
+            }
             if (command.equals("q")) {
                 loopContinues = false;
             }
-            if (command.equals("a")) {
-                editCategory(categoryOne);
-            }
-            if (command.equals("b")) {
-                editCategory(categoryTwo);
-            }
-            if (command.equals("c")) {
-                editCategory(categoryThree);
-            }
-            if (command.equals("d")) {
-                editCategory(categoryFour);
-            }
-            if (command.equals("e")) {
-                editCategory(categoryFive);
-            }
         }
-        Log log = new Log(categoryOne, categoryTwo, categoryThree, categoryFour, categoryFive);
-        readLog(log);
+    }
+
+    private void subsequentApp() {
     }
 
     // MODIFIES: this
     // EFFECTS: initializes and instantiates categories
     private void createCategories() {
         inputString = new Scanner(System.in); // not sure why I have to do this NullPointerException
-        System.out.println("Select 5 categories to record:\n-\n-\n-\n-\n-");
-        String nameOne = inputString.next();
-        categoryOne = new Category(nameOne, 0);
-        String nameTwo = inputString.next();
-        categoryTwo = new Category(nameTwo, 0);
-        String nameThree = inputString.next();
-        categoryThree = new Category(nameThree, 0);
-        String nameFour = inputString.next();
-        categoryFour = new Category(nameFour, 0);
-        String nameFive = inputString.next();
-        categoryFive = new Category(nameFive, 0);
+        System.out.println("Enter the categories you would like to track");
+        Boolean keepAsking = true;
+        categoryList = new Log();
+
+        while (keepAsking) {
+            String input = inputString.next();
+            System.out.println("Entered: " + input);
+            categoryList.add(new Category(input, 0));
+
+            if (!input.matches("[a-zA-Z]*")) {
+                categoryList.removeLast();
+                keepAsking = false;
+            }
+        }
     }
 
     // EFFECTS: displays list of categories that can be edited
     private void displayCategories() {
         System.out.println("\nSelect categories to edit:");
-        System.out.println("\ta -> " + categoryOne.getName());
-        System.out.println("\tb -> " + categoryTwo.getName());
-        System.out.println("\tc -> " + categoryThree.getName());
-        System.out.println("\td -> " + categoryFour.getName());
-        System.out.println("\te -> " + categoryFive.getName());
+        categoryList.displayCurrentLog();
+        System.out.println("r -> read log");
+        System.out.println("s -> save log");
         System.out.println("q -> quit");
     }
 
@@ -133,6 +135,10 @@ public class StatsApp {
         for (int i = 0; i < log.getLength(); i++) {
             System.out.println(log.get(i).getName() + ": " + log.get(i).getValue());
         }
+    }
+
+    public void saveRecord(Log log) {
+        record.add(log);
     }
 
 }

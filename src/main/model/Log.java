@@ -20,6 +20,7 @@ public class Log implements Writable {
         log = new LinkedList<>();
     }
 
+    // EFFECTS: print the names of all categories within log
     public void displayCurrentLog() {
         for (Category i : log) {
             System.out.println(i.getName());
@@ -42,8 +43,8 @@ public class Log implements Writable {
         return log.add(i);
     }
 
-    public Category removeLast() {
-        return log.removeLast();
+    public void removeLast() {
+        log.removeLast();
     }
 
     @Override

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 // Represents a set of Logs
 public class Record implements Writable {
 
-    private String name;
     private ArrayList<Log> record;
 
     // Create a new record with an empty list of logs

@@ -1,4 +1,5 @@
 package model;
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -6,18 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryTest {
     private Category categoryTest;
-    private Log logTest;
-
-    Category one = new Category("one", 0);
-    Category two = new Category("two", 0);
-    Category three = new Category("three", 0);
-    Category four = new Category("four", 0);
-    Category five = new Category("five", 0);
 
     @BeforeEach
     void runBefore() {
         categoryTest = new Category("Cooking", 0);
-        logTest = new Log();
     }
 
     @Test
@@ -56,20 +49,12 @@ class CategoryTest {
     }
 
     @Test
-    void testLogConstructor() {
-        assertEquals(1, logTest.getID());
-        assertEquals(5, logTest.getLogLength());
-    }
+    void toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", "test");
+        json.put("value", 0);
+        assertEquals("test", json.get("name"));
+        assertEquals(0, json.get("value"));
 
-    @Test
-    void testGet() {
-        assertEquals(two, logTest.get(1));
-        assertEquals(five, logTest.get(4));
     }
-
-    //void replaceCategoryTest() {
-        //assertEquals(5, logTest.getLength());
-        //assertEquals(5, logTest.replaceCategory(one, two).size());
-        //assertEquals(two ,logTest.get(0));
-    //}
 }

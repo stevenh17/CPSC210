@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 public class Category {
     private String name;           // name of the category
     private double value;          // numerical value of a category
@@ -44,6 +46,11 @@ public class Category {
         return value;
     }
 
-
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", name);
+        json.put("value", value);
+        return json;
+    }
 }
 

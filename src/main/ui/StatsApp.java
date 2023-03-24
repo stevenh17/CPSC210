@@ -1,42 +1,50 @@
 package ui;
 
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class StatsApp {
-
-    private Log categoryList;
+    // private Log categoryList;
     private Scanner inputString;
     private Scanner inputDouble;
-    private Log log;
-    private Record record = new Record();
+    Record record = new Record();
+    private static final String JSON_STORE = "./data/record.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
-    @SuppressWarnings("methodlength")
-    // EFFECTS: runs the application
+
+    // EFFECTS: constructs record and runs application
     public StatsApp() {
-        if (record.getLength() == 0) {
-            createCategories();
-        }
-        // wonder why this if statement is not properly executing? confident that getLength should return 1 based on
-        // the print statement below on line 38?
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        runStatsApp();
+    }
+
+    // MODIFIES: this
+    // EFFECTS: runs the application and takes in user input
+    private void runStatsApp() {
         boolean loopContinues = true;
         while (loopContinues) {
             displayCategories();
-            String command = inputString.next().toLowerCase();
-            for (int i = 0; i < categoryList.getLength(); i++) {
-                if (command.equals(categoryList.get(i).getName().toLowerCase())) {
-                    editCategory(categoryList.get(i));
-                }
+            String command = getCommand();
+            editCategoryIfChosen(command);
+            if (command.equals("c")) {
+                createCategories();
             }
             if (command.equals("r")) {
-                readLog(categoryList);
+                readLog(record.getMostRecentLog());
             }
             if (command.equals("s")) {
-                saveRecord(categoryList);
-                loopContinues = false;
                 System.out.println(record.getLength());
-                new StatsApp();
+                saveJsonRecord();
+            }
+            if (command.equals("l")) {
+                loadRecord();
             }
             if (command.equals("q")) {
                 loopContinues = false;
@@ -44,24 +52,36 @@ public class StatsApp {
         }
     }
 
-    private void subsequentApp() {
+    private void editCategoryIfChosen(String command) {
+        if (!record.isEmpty()) {
+            for (int i = 0; i < record.getMostRecentLog().getLogLength(); i++) {
+                if (command.equals(record.getMostRecentLog().get(i).getName().toLowerCase())) {
+                    editCategory(record.getMostRecentLog().get(i));
+                }
+            }
+        }
+    }
+
+    private String getCommand() {
+        inputString = new Scanner(System.in);
+        String command = inputString.next().toLowerCase();
+        return command;
     }
 
     // MODIFIES: this
     // EFFECTS: initializes and instantiates categories
     private void createCategories() {
-        inputString = new Scanner(System.in); // not sure why I have to do this NullPointerException
         System.out.println("Enter the categories you would like to track");
         Boolean keepAsking = true;
-        categoryList = new Log();
+        record.addLog(new Log());
 
         while (keepAsking) {
             String input = inputString.next();
             System.out.println("Entered: " + input);
-            categoryList.add(new Category(input, 0));
+            record.getMostRecentLog().add(new Category(input, 0));
 
             if (!input.matches("[a-zA-Z]*")) {
-                categoryList.removeLast();
+                record.getMostRecentLog().removeLast();
                 keepAsking = false;
             }
         }
@@ -70,9 +90,13 @@ public class StatsApp {
     // EFFECTS: displays list of categories that can be edited
     private void displayCategories() {
         System.out.println("\nSelect categories to edit:");
-        categoryList.displayCurrentLog();
+        if (!record.isEmpty()) {
+            record.getMostRecentLog().displayCurrentLog();
+        }
+        System.out.println("c -> create new categories");
         System.out.println("r -> read log");
         System.out.println("s -> save log");
+        System.out.println("l -> load log");
         System.out.println("q -> quit");
     }
 
@@ -87,10 +111,8 @@ public class StatsApp {
     // MODIFIES: this
     // EFFECT: chosen category's value is changed
     private void editCategory(Category category) {
-        inputString = new Scanner(System.in); // not sure why I have to do this NullPointerException
         displayEditOptions();
-        String input = inputString.next();
-
+        String input = getCommand();
         if (input.equals("a")) {
             doAddValue(category);
         } else if (input.equals("b")) {
@@ -132,13 +154,31 @@ public class StatsApp {
     // EFFECTS: prints out each category within a log
     public void readLog(Log log) {
         System.out.println("Log " + log.getID() + ":\n");
-        for (int i = 0; i < log.getLength(); i++) {
+        for (int i = 0; i < log.getLogLength(); i++) {
             System.out.println(log.get(i).getName() + ": " + log.get(i).getValue());
         }
     }
 
-    public void saveRecord(Log log) {
-        record.add(log);
+    // EFFECTS: saves the record to file
+    private void saveJsonRecord() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(record);
+            jsonWriter.close();
+            System.out.println("Saved to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
     }
 
+    // MODIFIES: this
+    // EFFECTS: loads record from file
+    private void loadRecord() {
+        try {
+            record = jsonReader.read();
+            System.out.println("Loaded from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
 }

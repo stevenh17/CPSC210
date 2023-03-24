@@ -51,16 +51,6 @@ public class LogTest {
     }
 
 //    @Test
-//    void testToJson() {
-//
-//    }
-//
-//    @Test
-//    void testLogToJson() {
-//
-//    }
-
-//    @Test
 //    void testDisplayCurrentLog() {
 //        logTest.add(one);
 //        assertEquals(System.out.println("one"), logTest.displayCurrentLog());

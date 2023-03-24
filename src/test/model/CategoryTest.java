@@ -47,14 +47,4 @@ class CategoryTest {
         assertEquals(70.5, categoryTest.addValue(20.5));
         assertEquals(100, categoryTest.addValue(29.5));
     }
-
-    @Test
-    void toJson() {
-        JSONObject json = new JSONObject();
-        json.put("name", "test");
-        json.put("value", 0);
-        assertEquals("test", json.get("name"));
-        assertEquals(0, json.get("value"));
-
-    }
 }

@@ -25,6 +25,15 @@ public class RecordTest {
     }
 
     @Test
+    void testGetLog() {
+        assertEquals(0, rTest.getLength());
+        rTest.addLog(log1);
+        assertEquals(log1, rTest.getLog(0));
+        rTest.addLog(log2);
+        assertEquals(log2, rTest.getLog(1));
+    }
+
+    @Test
     void testGetMostRecentLog() {
         assertEquals(0, rTest.getLength());
         rTest.addLog(log1);
@@ -51,14 +60,4 @@ public class RecordTest {
         rTest.addLog(log3);
         assertEquals(3, rTest.getLength());
     }
-
-//    @Test
-//    void testToJson() {
-//
-//    }
-//
-//    @Test
-//    void testRecordToJson() {
-//
-//    }
 }

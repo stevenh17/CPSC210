@@ -20,18 +20,11 @@ public class Log implements Writable {
         log = new LinkedList<>();
     }
 
-    // EFFECTS: print the names of all categories within log
-    public void displayCurrentLog() {
-        for (Category i : log) {
-            System.out.println(i.getName());
-        }
-    }
-
     public int getID() {
         return id;
     }
 
-    public int getLogLength() {
+    public int getLength() {
         return log.size();
     }
 
@@ -51,6 +44,7 @@ public class Log implements Writable {
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("log", logToJson());
+        json.put("id", id);
 
         // Not sure how but log id is being saved even though I don't see in my record.json
 

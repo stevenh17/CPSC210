@@ -20,7 +20,7 @@ public class LogTest {
     @Test
     void testLogConstructor() {
         assertEquals(1, logTest.getID());
-        assertEquals(0, logTest.getLogLength());
+        assertEquals(0, logTest.getLength());
         Log logTest2 = new Log();
         assertEquals(2, logTest2.getID());
     }
@@ -36,18 +36,18 @@ public class LogTest {
 
     @Test
     void testAdd() {
-        assertEquals(0 ,logTest.getLogLength());
+        assertEquals(0 ,logTest.getLength());
         logTest.add(one);
-        assertEquals(1 ,logTest.getLogLength());
+        assertEquals(1 ,logTest.getLength());
     }
 
     @Test
     void testRemoveLast() {
         logTest.add(one);
         logTest.add(two);
-        assertEquals(2 ,logTest.getLogLength());
+        assertEquals(2 ,logTest.getLength());
         logTest.removeLast();
-        assertEquals(1 ,logTest.getLogLength());
+        assertEquals(1 ,logTest.getLength());
     }
 
 //    @Test

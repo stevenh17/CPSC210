@@ -9,7 +9,7 @@ import java.util.ArrayList;
 // Represents a set of Logs
 public class Record implements Writable {
 
-    private ArrayList<Log> record;
+    private final ArrayList<Log> record;
 
     // Create a new record with an empty list of logs
     public Record() {
@@ -32,8 +32,8 @@ public class Record implements Writable {
         return jsonArray;
     }
 
-    public boolean addLog(Log log) {
-        return record.add(log);
+    public void addLog(Log log) {
+        record.add(log);
     }
 
     public Log getLog(int i) {

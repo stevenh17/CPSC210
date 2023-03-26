@@ -9,14 +9,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class StatsApp {
-    // private Log categoryList;
     private Scanner inputString;
     private Scanner inputDouble;
     Record record = new Record();
     private static final String JSON_STORE = "./data/record.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-
 
     // EFFECTS: constructs record and runs application
     public StatsApp() {
@@ -40,7 +38,6 @@ public class StatsApp {
                 readLog(record.getMostRecentLog());
             }
             if (command.equals("s")) {
-                System.out.println(record.getLength());
                 saveJsonRecord();
             }
             if (command.equals("l")) {
@@ -54,7 +51,7 @@ public class StatsApp {
 
     private void editCategoryIfChosen(String command) {
         if (!record.isEmpty()) {
-            for (int i = 0; i < record.getMostRecentLog().getLogLength(); i++) {
+            for (int i = 0; i < record.getMostRecentLog().getLength(); i++) {
                 if (command.equals(record.getMostRecentLog().get(i).getName().toLowerCase())) {
                     editCategory(record.getMostRecentLog().get(i));
                 }
@@ -73,7 +70,17 @@ public class StatsApp {
     private void createCategories() {
         System.out.println("Enter the categories you would like to track");
         Boolean keepAsking = true;
-        record.addLog(new Log());
+
+        // savedRecord is all of its past logs
+        if (!record.isEmpty()) {
+            loadRecord();
+            Record savedRecord = record;
+            Log mostRecentLog = savedRecord.getMostRecentLog();
+            record.addLog(new Log());
+            record.addLog(mostRecentLog);
+        } else {
+            record.addLog(new Log());
+        }
 
         while (keepAsking) {
             String input = inputString.next();
@@ -91,13 +98,20 @@ public class StatsApp {
     private void displayCategories() {
         System.out.println("\nSelect categories to edit:");
         if (!record.isEmpty()) {
-            record.getMostRecentLog().displayCurrentLog();
+            displayLog(record.getMostRecentLog());
         }
         System.out.println("c -> create new categories");
         System.out.println("r -> read log");
         System.out.println("s -> save log");
         System.out.println("l -> load log");
         System.out.println("q -> quit");
+    }
+
+    // EFFECTS: print the names of all categories within log
+    public void displayLog(Log log) {
+        for (int i = 0; i < log.getLength(); i++) {
+            System.out.println(log.get(i).getName());
+        }
     }
 
     // EFFECTS: displays list of edit options
@@ -154,7 +168,7 @@ public class StatsApp {
     // EFFECTS: prints out each category within a log
     public void readLog(Log log) {
         System.out.println("Log " + log.getID() + ":\n");
-        for (int i = 0; i < log.getLogLength(); i++) {
+        for (int i = 0; i < log.getLength(); i++) {
             System.out.println(log.get(i).getName() + ": " + log.get(i).getValue());
         }
     }

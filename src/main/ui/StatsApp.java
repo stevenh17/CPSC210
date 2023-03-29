@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
+// App for user to track categories and logs
 public class StatsApp {
     private Scanner inputString;
     private Scanner inputDouble;
@@ -174,7 +175,7 @@ public class StatsApp {
     }
 
     // EFFECTS: saves the record to file
-    private void saveJsonRecord() {
+    public void saveJsonRecord() {
         try {
             jsonWriter.open();
             jsonWriter.write(record);
@@ -187,7 +188,7 @@ public class StatsApp {
 
     // MODIFIES: this
     // EFFECTS: loads record from file
-    private void loadRecord() {
+    public void loadRecord() {
         try {
             record = jsonReader.read();
             System.out.println("Loaded from " + JSON_STORE);

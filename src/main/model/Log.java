@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.LinkedList;
+import java.util.List;
 
 // Represents a set of categories
 public class Log implements Writable {
@@ -18,6 +19,10 @@ public class Log implements Writable {
         id = nextLog + 1;
         nextLog++;
         log = new LinkedList<>();
+    }
+
+    public LinkedList<Category> getAllCategories() {
+        return log;
     }
 
     public int getID() {
@@ -36,18 +41,21 @@ public class Log implements Writable {
         return log.add(i);
     }
 
+    // EFFECT: removes the last category in a log
     public void removeLast() {
         log.removeLast();
     }
 
+    // EFFECT: get last element in a log
+    public Category getLast() { return log.getLast(); }
+
+    // MODIFIES: this
+    // EFFECTS: creates JSON version of log
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("log", logToJson());
         json.put("id", id);
-
-        // Not sure how but log id is being saved even though I don't see in my record.json
-
         return json;
     }
 

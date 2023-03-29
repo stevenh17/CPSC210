@@ -51,4 +51,8 @@ public class Record implements Writable {
     public int getLength() {
         return record.size();
     }
+
+    public ArrayList<Log> getAllLogs() {
+        return record;
+    }
 }

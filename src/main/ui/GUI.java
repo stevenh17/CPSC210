@@ -16,6 +16,7 @@ public class GUI {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
+    @SuppressWarnings("methodlength")
     public GUI() {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);

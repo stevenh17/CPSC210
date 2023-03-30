@@ -3,7 +3,7 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
-public class StatCircle extends JPanel {
+public class Circle extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {

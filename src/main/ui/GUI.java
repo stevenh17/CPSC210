@@ -11,73 +11,218 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GUI {
+    private JButton buttonLoad;
+    private JButton buttonSave;
+    private JButton buttonSetCategoryValue;
+    private JTextField textFieldSetCategoryValue;
+    private JTextField textFieldSubCategoryValue;
+    private JTextField textFieldAddCategoryValue;
+    private JLabel labelLogs;
+    private JButton buttonDisplay;
+    private JButton buttonNewLog;
+    private JButton buttonNewCategory;
+    private JTextField textFieldNewCategory;
+    private JFrame frame;
     Record record = new Record();
     private static final String JSON_STORE = "./data/record.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    @SuppressWarnings("methodlength")
     public GUI() {
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
 
-        // Frame
-        JFrame frame = new JFrame("StatsApp");
-        frame.setSize(1200, 800);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
+        createFrame();
+        everythingNewCategory();
+        everythingNewLog();
 
-        // Text-field for new category
-        JTextField textFieldNewCategory = new JTextField();
+        createButtonDisplay();
+        buttonDisplayAction(buttonDisplay, labelLogs);
+
+        everythingChangeCategoryValue();
+
+        createStatCircle(frame);
+
+        createButtonSave();
+        buttonSaveAction(buttonSave);
+
+        createButtonLoad();
+        buttonLoadAction(buttonLoad);
+
+        frame.setVisible(true);
+    }
+
+    private void everythingChangeCategoryValue() {
+        createTextFieldAddCategoryValue();
+        JButton buttonAddCategoryValue = createButtonAddCategoryValue();
+        buttonAddCategoryValueAction(textFieldAddCategoryValue, buttonAddCategoryValue);
+
+        createTextFieldSubCategoryValue();
+        JButton buttonSubCategoryValue = createButtonSubCategoryValue();
+        buttonSubCategoryValueAction(textFieldSubCategoryValue, buttonSubCategoryValue);
+
+        createTextFieldSetCategoryValue();
+        createButtonSetCategoryValue();
+        buttonSetCategoryValueAction(textFieldSetCategoryValue, buttonSetCategoryValue);
+
+        frame.add(buttonAddCategoryValue);
+        frame.add(buttonSubCategoryValue);
+        frame.add(buttonSetCategoryValue);
+    }
+
+    private void everythingNewLog() {
+        createLabelLog();
+        createButtonNewLog();
+        buttonNewLogAction(buttonNewLog);
+        frame.add(buttonNewLog);
+    }
+
+    private void everythingNewCategory() {
+        createTextFieldNewCategory();
+        JLabel labelCategory = createLabelCategory();
+        createButtonNewCategory();
+        buttonNewCategoryAction(textFieldNewCategory, labelCategory, buttonNewCategory);
+        frame.add(buttonNewCategory);
+    }
+
+    private void createButtonLoad() {
+        buttonLoad = new JButton("Load Data");
+        buttonLoad.setBounds(200, 600, 200, 30);
+        frame.add(buttonLoad);
+    }
+
+    private void createButtonSave() {
+        buttonSave = new JButton("Save Data");
+        buttonSave.setBounds(200, 500, 200, 30);
+        frame.add(buttonSave);
+    }
+
+    private void createButtonSetCategoryValue() {
+        buttonSetCategoryValue = new JButton("Set");
+        buttonSetCategoryValue.setBounds(650, 200, 75, 30);
+    }
+
+    private void createTextFieldSetCategoryValue() {
+        textFieldSetCategoryValue = new JTextField();
+        textFieldSetCategoryValue.setBounds(650, 150, 75, 30);
+        frame.add(textFieldSetCategoryValue);
+    }
+
+    private JButton createButtonSubCategoryValue() {
+        JButton buttonSubCategoryValue = new JButton("Sub");
+        buttonSubCategoryValue.setBounds(550, 200, 75, 30);
+        return buttonSubCategoryValue;
+    }
+
+    private void createTextFieldSubCategoryValue() {
+        textFieldSubCategoryValue = new JTextField();
+        textFieldSubCategoryValue.setBounds(550, 150, 75, 30);
+        frame.add(textFieldSubCategoryValue);
+    }
+
+    private JButton createButtonAddCategoryValue() {
+        JButton buttonAddCategoryValue = new JButton("Add");
+        buttonAddCategoryValue.setBounds(450, 200, 75, 30);
+        return buttonAddCategoryValue;
+    }
+
+    private void createTextFieldAddCategoryValue() {
+        textFieldAddCategoryValue = new JTextField();
+        textFieldAddCategoryValue.setBounds(450, 150, 75, 30);
+        frame.add(textFieldAddCategoryValue);
+    }
+
+    private void createLabelLog() {
+        labelLogs = new JLabel();
+        labelLogs.setBounds(75, 110, 400, 400);
+    }
+
+    private void createButtonDisplay() {
+        buttonDisplay = new JButton("Display");
+        buttonDisplay.setBounds(200, 400, 200, 30);
+        frame.add(buttonDisplay);
+    }
+
+    private void createButtonNewLog() {
+        buttonNewLog = new JButton("New Log");
+        buttonNewLog.setBounds(200, 300, 200, 30);
+    }
+
+    private void createTextFieldNewCategory() {
+        textFieldNewCategory = new JTextField();
         textFieldNewCategory.setBounds(200, 150, 200, 30);
         frame.add(textFieldNewCategory);
+    }
 
-        // Label for new category
+    private JLabel createLabelCategory() {
         JLabel labelCategory = new JLabel();
         labelCategory.setBounds(100, 40, 200, 30);
         frame.add(labelCategory);
+        return labelCategory;
+    }
 
-        // Button for new category
-        JButton buttonNewCategory = new JButton("Make New Category");
+    private void createFrame() {
+        frame = new JFrame("StatsApp");
+        frame.setSize(1200, 800);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+    }
+
+    private void createButtonNewCategory() {
+        buttonNewCategory = new JButton("Make New Category");
         buttonNewCategory.setBounds(200, 200, 200, 30);
+    }
 
-        // Add an ActionListener to the button
-        buttonNewCategory.addActionListener(new ActionListener() {
+
+    private void buttonLoadAction(JButton buttonLoad) {
+        buttonLoad.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the text entered by the user
-                String userInput = textFieldNewCategory.getText();
-
-                // Set the text of the label to the user input
-                labelCategory.setText(userInput);
-
-                // Create a category
-                Category category = new Category(userInput, 0);
-                record.getMostRecentLog().add(category);
+                loadRecord();
             }
         });
+    }
 
-        // Button for new log
-        JButton buttonNewLog = new JButton("New Log");
-        buttonNewLog.setBounds(200, 300, 200, 30);
-
-        // Add an ActionListener to the button
-        buttonNewLog.addActionListener(new ActionListener() {
+    private void buttonSaveAction(JButton buttonSave) {
+        buttonSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Log log = new Log();
-                record.addLog(log);
+                saveJsonRecord();
             }
         });
+    }
 
-        // Button to display all logs
-        JButton buttonDisplay = new JButton("Display");
-        buttonDisplay.setBounds(200, 400, 200, 30);
+    private void buttonSetCategoryValueAction(JTextField textFieldSetCategoryValue, JButton buttonSetCategoryValue) {
+        buttonSetCategoryValue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double userInput = Double.parseDouble(textFieldSetCategoryValue.getText());
+                record.getMostRecentLog().getLast().setValue(userInput);
+            }
+        });
+    }
 
-        // Label for this display button
-        JLabel labelLogs = new JLabel();
-        labelLogs.setBounds(75, 110, 400, 400);
+    private void buttonSubCategoryValueAction(JTextField textFieldSubCategoryValue, JButton buttonSubCategoryValue) {
+        buttonSubCategoryValue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double userInput = Double.parseDouble(textFieldSubCategoryValue.getText());
+                record.getMostRecentLog().getLast().subValue(userInput);
+            }
+        });
+    }
 
+    private void buttonAddCategoryValueAction(JTextField textFieldAddCategoryValue, JButton buttonAddCategoryValue) {
+        buttonAddCategoryValue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double userInput = Double.parseDouble(textFieldAddCategoryValue.getText());
+                record.getMostRecentLog().getLast().addValue(userInput);
+            }
+        });
+    }
+
+    private void buttonDisplayAction(JButton buttonDisplay, JLabel labelLogs) {
         buttonDisplay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -99,104 +244,48 @@ public class GUI {
                 labelLogs.setText("<html>" + logsTotal + "</html>");
             }
         });
+    }
 
-        // Text-field for adding to category value
-        JTextField textFieldAddCategoryValue = new JTextField();
-        textFieldAddCategoryValue.setBounds(450, 150, 75, 30);
-        frame.add(textFieldAddCategoryValue);
-
-        // Button for adding to category value
-        JButton buttonAddCategoryValue = new JButton("Add");
-        buttonAddCategoryValue.setBounds(450, 200, 75, 30);
-
+    private void buttonNewLogAction(JButton buttonNewLog) {
         // Add an ActionListener to the button
-        buttonAddCategoryValue.addActionListener(new ActionListener() {
+        buttonNewLog.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double userInput = Double.parseDouble(textFieldAddCategoryValue.getText());
-                record.getMostRecentLog().getLast().addValue(userInput);
+                Log log = new Log();
+                record.addLog(log);
             }
         });
+    }
 
-        // Text-field for subtracting from category value
-        JTextField textFieldSubCategoryValue = new JTextField();
-        textFieldSubCategoryValue.setBounds(550, 150, 75, 30);
-        frame.add(textFieldSubCategoryValue);
-
-        // Button for subtracting category value
-        JButton buttonSubCategoryValue = new JButton("Sub");
-        buttonSubCategoryValue.setBounds(550, 200, 75, 30);
-
+    private void buttonNewCategoryAction(JTextField textFieldNewCategory, JLabel labelCategory,
+                                         JButton buttonNewCategory) {
         // Add an ActionListener to the button
-        buttonSubCategoryValue.addActionListener(new ActionListener() {
+        buttonNewCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                double userInput = Double.parseDouble(textFieldSubCategoryValue.getText());
-                record.getMostRecentLog().getLast().subValue(userInput);
+                // Get the text entered by the user
+                String userInput = textFieldNewCategory.getText();
+
+                // Set the text of the label to the user input
+                labelCategory.setText(userInput);
+
+                // Create a category
+                Category category = new Category(userInput, 0);
+                record.getMostRecentLog().add(category);
             }
         });
-
-        // Text-field for setting category value
-        JTextField textFieldSetCategoryValue = new JTextField();
-        textFieldSetCategoryValue.setBounds(650, 150, 75, 30);
-        frame.add(textFieldSetCategoryValue);
-
-        // Button for setting category value
-        JButton buttonSetCategoryValue = new JButton("Set");
-        buttonSetCategoryValue.setBounds(650, 200, 75, 30);
-
-        // Add an ActionListener to the button
-        buttonSetCategoryValue.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double userInput = Double.parseDouble(textFieldSetCategoryValue.getText());
-                record.getMostRecentLog().getLast().setValue(userInput);
-            }
-        });
-
-        createStatCircle(frame);
-
-        // Button for saving
-        JButton buttonSave = new JButton("Save Data");
-        buttonSave.setBounds(200, 500, 200, 30);
-
-        // Add an ActionListener to the button
-        buttonSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveJsonRecord();
-            }
-        });
-
-        // Button for loading
-        JButton buttonLoad = new JButton("Load Data");
-        buttonLoad.setBounds(200, 600, 200, 30);
-
-        // Add an ActionListener to the button
-        buttonLoad.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loadRecord();
-            }
-        });
-
-        frame.add(buttonNewCategory);
-        frame.add(buttonNewLog);
-        frame.add(buttonDisplay);
-        frame.add(buttonAddCategoryValue);
-        frame.add(buttonSubCategoryValue);
-        frame.add(buttonSetCategoryValue);
-        frame.add(buttonSave);
-        frame.add(buttonLoad);
-        frame.setVisible(true);
     }
 
     private void createStatCircle(JFrame frame) {
-        StatCircle circle = new StatCircle();
+        Circle circle = new Circle();
         frame.add(circle, BorderLayout.CENTER);
         // THIS IS WHY IT NEVER SHOWED UP
-        circle.setBounds(550, 300, 250, 250);
+        circle.setBounds(500, 300, 250, 250);
         // circle.setBackground(Color.WHITE);
+
+//        Stats stats = new Stats(record);
+//        stats.setBounds(500, 290, 30, 30);
+//        frame.add(stats);
     }
 
     // EFFECTS: saves the record to file

@@ -47,7 +47,9 @@ public class Log implements Writable {
     }
 
     // EFFECT: get last element in a log
-    public Category getLast() { return log.getLast(); }
+    public Category getLast() {
+        return log.getLast();
+    }
 
     // MODIFIES: this
     // EFFECTS: creates JSON version of log

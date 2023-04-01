@@ -11,35 +11,28 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class GUI {
-    private JButton buttonNewCategory;
-    private JTextField textFieldNewCategory;
-
+    private JButton buttonLoad;
+    private JButton buttonSave;
+    private JButton buttonSetCategoryValue;
     private JTextField textFieldSetCategoryValue;
     private JTextField textFieldSubCategoryValue;
     private JTextField textFieldAddCategoryValue;
-
-
     private JLabel labelLogs;
-    private JButton buttonNewLog;
+    private final int circleX = 500;
+    private final int circleY = 300;
+    private final int circleWidth = 250;
+    private final int circleHeight = 250;
 
     private JButton buttonDisplay;
-
-    private JButton buttonLoad;
-    private JButton buttonSave;
-
+    private JButton buttonNewLog;
+    private JButton buttonNewCategory;
+    private JTextField textFieldNewCategory;
     private JFrame frame;
-    private Record record = new Record();
+
+    Record record = new Record();
     private static final String JSON_STORE = "./data/record.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-
-    private Circle circle = new Circle();
-
-    private int circleX;
-    private int circleY;
-    private int circleWidth;
-    private int circleHeight;
-
 
     public GUI() {
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -54,7 +47,7 @@ public class GUI {
 
         everythingChangeCategoryValue();
 
-        createStatCircle(frame);
+        createStatCircle(frame, circleX, circleY, circleWidth, circleHeight);
 
         createButtonSave();
         buttonSaveAction(buttonSave);
@@ -63,14 +56,6 @@ public class GUI {
         buttonLoadAction(buttonLoad);
 
         frame.setVisible(true);
-    }
-
-    private void everythingNewCategory() {
-        createTextFieldNewCategory();
-        JLabel labelCategory = createLabelCategory();
-        createButtonNewCategory();
-        buttonNewCategoryAction(textFieldNewCategory, labelCategory, buttonNewCategory);
-        frame.add(buttonNewCategory);
     }
 
     private void everythingChangeCategoryValue() {
@@ -83,7 +68,7 @@ public class GUI {
         buttonSubCategoryValueAction(textFieldSubCategoryValue, buttonSubCategoryValue);
 
         createTextFieldSetCategoryValue();
-        JButton buttonSetCategoryValue = createButtonSetCategoryValue();
+        createButtonSetCategoryValue();
         buttonSetCategoryValueAction(textFieldSetCategoryValue, buttonSetCategoryValue);
 
         frame.add(buttonAddCategoryValue);
@@ -98,6 +83,14 @@ public class GUI {
         frame.add(buttonNewLog);
     }
 
+    private void everythingNewCategory() {
+        createTextFieldNewCategory();
+        JLabel labelCategory = createLabelCategory();
+        createButtonNewCategory();
+        buttonNewCategoryAction(textFieldNewCategory, labelCategory, buttonNewCategory);
+        frame.add(buttonNewCategory);
+    }
+
     private void createButtonLoad() {
         buttonLoad = new JButton("Load Data");
         buttonLoad.setBounds(200, 600, 200, 30);
@@ -110,10 +103,9 @@ public class GUI {
         frame.add(buttonSave);
     }
 
-    private JButton createButtonSetCategoryValue() {
-        JButton buttonSetCategoryValue = new JButton("Set");
+    private void createButtonSetCategoryValue() {
+        buttonSetCategoryValue = new JButton("Set");
         buttonSetCategoryValue.setBounds(650, 200, 75, 30);
-        return buttonSetCategoryValue;
     }
 
     private void createTextFieldSetCategoryValue() {
@@ -177,7 +169,7 @@ public class GUI {
 
     private void createFrame() {
         frame = new JFrame("StatsApp");
-        frame.setSize(1500, 1000);
+        frame.setSize(1200, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
     }
@@ -187,12 +179,20 @@ public class GUI {
         buttonNewCategory.setBounds(200, 200, 200, 30);
     }
 
-
     private void buttonLoadAction(JButton buttonLoad) {
         buttonLoad.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadRecord();
+            }
+        });
+    }
+
+    private void buttonSaveAction(JButton buttonSave) {
+        buttonSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveJsonRecord();
             }
         });
     }
@@ -231,27 +231,53 @@ public class GUI {
         buttonDisplay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Label for logs
-                frame.add(labelLogs);
+                updateLogs(labelLogs);
+                updateStats();
 
-                // String of all logs
-                String logsTotal = "";
-
-                // Loop through all logs and their categories
-                for (Log log : record.getAllLogs()) {
-                    logsTotal += "Log " + log.getID() + ":<br>";
-                    for (Category category : log.getAllCategories()) {
-                        logsTotal += " " + category.getName() + ": " + category.getValue() + "<br>";
-                    }
-                }
-
-                // Update the label to show all logs
-                labelLogs.setText("<html>" + logsTotal + "</html>");
-
-                // update the circle to show all stats
-                statsCircle();
             }
         });
+    }
+
+    private void updateLogs(JLabel labelLogs) {
+        // Label for logs
+        frame.add(labelLogs);
+
+        // String of all logs
+        String logsTotal = "";
+
+        // Loop through all logs and their categories
+        for (Log log : record.getAllLogs()) {
+            logsTotal += "Log " + log.getID() + ":<br>";
+            for (Category category : log.getAllCategories()) {
+                logsTotal += " " + category.getName() + ": " + category.getValue() + "<br>";
+            }
+        }
+
+        // Update the label to show all logs
+        labelLogs.setText("<html>" + logsTotal + "</html>");
+    }
+
+    private void updateStats() {
+        double centerX = circleX + circleWidth / 2;
+        double centerY = circleY + circleHeight / 2;
+        double preventOverlap = 25;
+        double[][] vertices = {
+                {centerX, centerY - 125 - preventOverlap},
+                {centerX + 121.25 + preventOverlap, centerY - 38.63 - preventOverlap},
+                {centerX + 75 + preventOverlap, centerY + 101.62 + preventOverlap},
+                {centerX - 75 - preventOverlap, centerY + 101.62 + preventOverlap},
+                {centerX - 121.25 - preventOverlap, centerY - 38.63 - preventOverlap}
+        };
+
+        for (int i = 0; i < record.getMostRecentLog().getLength(); i++) {
+            JLabel labelStats = new JLabel();
+            labelStats.setText(record.getMostRecentLog().get(i).getName());
+//            labelStats.setBounds(circleX - 50 * i, circleY - 50 * i, 30, 25);
+            labelStats.setBounds((int) vertices[i][0], (int) vertices[i][1], 30, 25);
+            frame.add(labelStats);
+        }
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void buttonNewLogAction(JButton buttonNewLog) {
@@ -284,14 +310,11 @@ public class GUI {
         });
     }
 
-    private void createStatCircle(JFrame frame) {
-        circleX = 500;
-        circleY = 300;
-        circleWidth = 250;
-        circleHeight = 250;
-        circle.setBounds(circleX, circleY, circleWidth, circleHeight);
+    private void createStatCircle(JFrame frame, int circleX, int circleY, int circleWidth, int circleHeight) {
+        Circle circle = new Circle();
         frame.add(circle, BorderLayout.CENTER);
-        // circle.setBackground(Color.WHITE);
+        circle.setBounds(circleX, circleY, circleWidth, circleHeight);
+        circle.setBackground(Color.WHITE);
     }
 
     // EFFECTS: saves the record to file
@@ -315,35 +338,5 @@ public class GUI {
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
         }
-    }
-
-    private void buttonSaveAction(JButton buttonSave) {
-        buttonSave.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveJsonRecord();
-            }
-        });
-    }
-
-    // SETBOUND BUT NOT SHOWING UP WHERE I EXPECT IT TO
-    // ALSO, IT DOESN'T SHOW UP UNTIL I ADJUST THE WINDOW SIZE
-    private void statsCircle() {
-        JLabel cat1 = new JLabel(record.getMostRecentLog().get(0).getName());
-        JLabel cat2 = new JLabel(record.getMostRecentLog().get(1).getName());
-        JLabel cat3 = new JLabel(record.getMostRecentLog().get(2).getName());
-        JLabel cat4 = new JLabel(record.getMostRecentLog().get(3).getName());
-        JLabel cat5 = new JLabel(record.getMostRecentLog().get(4).getName());
-        cat1.setBounds(circleX,circleY - 50,30,30);
-        cat2.setBounds(circleX - 50,circleY - 100,30,30);
-        cat2.setBounds(circleX + 50,circleY - 100,30,30);
-        cat3.setBounds(circleX - 50,circleY - (circleHeight + 50),30,30);
-        cat4.setBounds(circleX + 50,circleY - (circleHeight + 50),30,30);
-        frame.add(cat1);
-        frame.add(cat2);
-        frame.add(cat3);
-        frame.add(cat4);
-        frame.add(cat5);
-        frame.setVisible(true);
     }
 }

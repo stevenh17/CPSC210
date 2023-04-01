@@ -3,8 +3,6 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogTest {
@@ -23,11 +21,8 @@ public class LogTest {
     void testLogConstructor() {
         assertEquals(1, logTest.getID());
         assertEquals(0, logTest.getLength());
-        logTest.add(one);
-        logTest.add(two);
         Log logTest2 = new Log();
         assertEquals(2, logTest2.getID());
-        assertEquals(two, logTest.getLast());
     }
 
     @Test
@@ -55,10 +50,11 @@ public class LogTest {
         assertEquals(1 ,logTest.getLength());
     }
 
-    @Test
-    void getLast() {
-        logTest.add(one);
-        logTest.add(two);
-        assertEquals(two, logTest.getLast());
-    }
+//    @Test
+//    void testDisplayCurrentLog() {
+//        logTest.add(one);
+//        assertEquals(System.out.println("one"), logTest.displayCurrentLog());
+//    }
+
+
 }

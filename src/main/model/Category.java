@@ -30,6 +30,7 @@ public class Category {
     // EFFECT: categoryValue is set to given value and returned
     public double setValue(double setValue) {
         this.value = setValue;
+        EventLog.getInstance().logEvent(new Event("Set " + this.getName() + " to " + this.value));
         return value;
     }
 
@@ -37,6 +38,7 @@ public class Category {
     // EFFECT: categoryValue decreases by addValue and returns value
     public double subValue(double subValue) {
         this.value = value - subValue;
+        EventLog.getInstance().logEvent(new Event("Subtracted " + this.value + " from " + this.getName()));
         return value;
     }
 
@@ -44,6 +46,7 @@ public class Category {
     // EFFECT: categoryValue increases by addValue and returns value
     public double addValue(double addValue) {
         this.value = value + addValue;
+        EventLog.getInstance().logEvent(new Event("Added  " + this.value + " to " + this.getName()));
         return value;
     }
 

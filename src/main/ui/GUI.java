@@ -1,12 +1,15 @@
 package ui;
 
 import model.*;
+import model.Event;
 import persistence.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -58,6 +61,7 @@ public class GUI {
         frame.setVisible(true);
     }
 
+    // EFFECTS: creates the text fields and buttons for changing category values and adds to frame
     private void everythingChangeCategoryValue() {
         createTextFieldAddCategoryValue();
         JButton buttonAddCategoryValue = createButtonAddCategoryValue();
@@ -76,6 +80,7 @@ public class GUI {
         frame.add(buttonSetCategoryValue);
     }
 
+    // EFFECTS: creates the text fields and buttons for add logs and adds to frame
     private void everythingNewLog() {
         createLabelLog();
         createButtonNewLog();
@@ -83,6 +88,7 @@ public class GUI {
         frame.add(buttonNewLog);
     }
 
+    // EFFECTS: creates the text fields and buttons for making a new category
     private void everythingNewCategory() {
         createTextFieldNewCategory();
         JLabel labelCategory = createLabelCategory();
@@ -91,75 +97,88 @@ public class GUI {
         frame.add(buttonNewCategory);
     }
 
+    // EFFECTS: creates the button to load data
     private void createButtonLoad() {
         buttonLoad = new JButton("Load Data");
         buttonLoad.setBounds(200, 600, 200, 30);
         frame.add(buttonLoad);
     }
 
+    // EFFECTS: creates the button to save data
     private void createButtonSave() {
         buttonSave = new JButton("Save Data");
         buttonSave.setBounds(200, 500, 200, 30);
         frame.add(buttonSave);
     }
 
+    // EFFECTS: creates the button to set category value
     private void createButtonSetCategoryValue() {
         buttonSetCategoryValue = new JButton("Set");
         buttonSetCategoryValue.setBounds(650, 200, 75, 30);
     }
 
+    // EFFECTS: creates the text field to set category value
     private void createTextFieldSetCategoryValue() {
         textFieldSetCategoryValue = new JTextField();
         textFieldSetCategoryValue.setBounds(650, 150, 75, 30);
         frame.add(textFieldSetCategoryValue);
     }
 
+    // EFFECTS: creates the button to subtract from category value
     private JButton createButtonSubCategoryValue() {
         JButton buttonSubCategoryValue = new JButton("Sub");
         buttonSubCategoryValue.setBounds(550, 200, 75, 30);
         return buttonSubCategoryValue;
     }
 
+    // EFFECTS: creates the text field to subtract from category value
     private void createTextFieldSubCategoryValue() {
         textFieldSubCategoryValue = new JTextField();
         textFieldSubCategoryValue.setBounds(550, 150, 75, 30);
         frame.add(textFieldSubCategoryValue);
     }
 
+    // EFFECTS: creates the button to add to category value
     private JButton createButtonAddCategoryValue() {
         JButton buttonAddCategoryValue = new JButton("Add");
         buttonAddCategoryValue.setBounds(450, 200, 75, 30);
         return buttonAddCategoryValue;
     }
 
+    // EFFECTS: creates the text field to add to category value
     private void createTextFieldAddCategoryValue() {
         textFieldAddCategoryValue = new JTextField();
         textFieldAddCategoryValue.setBounds(450, 150, 75, 30);
         frame.add(textFieldAddCategoryValue);
     }
 
+    // EFFECTS: creates the label to display new logs
     private void createLabelLog() {
         labelLogs = new JLabel();
         labelLogs.setBounds(75, 110, 400, 400);
     }
 
+    // EFFECTS: creates the button to display logs
     private void createButtonDisplay() {
         buttonDisplay = new JButton("Display");
         buttonDisplay.setBounds(200, 400, 200, 30);
         frame.add(buttonDisplay);
     }
 
+    // EFFECTS: creates the button to create a new log
     private void createButtonNewLog() {
         buttonNewLog = new JButton("New Log");
         buttonNewLog.setBounds(200, 300, 200, 30);
     }
 
+    // EFFECTS: creates the text field to make a new category
     private void createTextFieldNewCategory() {
         textFieldNewCategory = new JTextField();
         textFieldNewCategory.setBounds(200, 150, 200, 30);
         frame.add(textFieldNewCategory);
     }
 
+    // EFFECTS: creates the label to make a new category
     private JLabel createLabelCategory() {
         JLabel labelCategory = new JLabel();
         labelCategory.setBounds(100, 40, 200, 30);
@@ -167,18 +186,31 @@ public class GUI {
         return labelCategory;
     }
 
+    // EFFECTS: creates the frame
     private void createFrame() {
         frame = new JFrame("StatsApp");
         frame.setSize(1200, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                for (Event event : EventLog.getInstance()) {
+                    System.out.println(event.getDate());
+                    System.out.println(event.getDescription());
+                    System.out.println();
+                }
+            }
+        });
         frame.setLayout(null);
     }
 
+    // EFFECTS: creates the button for a new category
     private void createButtonNewCategory() {
         buttonNewCategory = new JButton("Make New Category");
         buttonNewCategory.setBounds(200, 200, 200, 30);
     }
 
+    // EFFECTS: loads the data
     private void buttonLoadAction(JButton buttonLoad) {
         buttonLoad.addActionListener(new ActionListener() {
             @Override
@@ -188,6 +220,7 @@ public class GUI {
         });
     }
 
+    // EFFECTS: saves the data
     private void buttonSaveAction(JButton buttonSave) {
         buttonSave.addActionListener(new ActionListener() {
             @Override
@@ -197,6 +230,7 @@ public class GUI {
         });
     }
 
+    // EFFECTS: ActionListener that sets category value
     private void buttonSetCategoryValueAction(JTextField textFieldSetCategoryValue, JButton buttonSetCategoryValue) {
         buttonSetCategoryValue.addActionListener(new ActionListener() {
             @Override
@@ -207,6 +241,7 @@ public class GUI {
         });
     }
 
+    // EFFECTS: ActionListener that subtracts from category value
     private void buttonSubCategoryValueAction(JTextField textFieldSubCategoryValue, JButton buttonSubCategoryValue) {
         buttonSubCategoryValue.addActionListener(new ActionListener() {
             @Override
@@ -217,6 +252,7 @@ public class GUI {
         });
     }
 
+    // EFFECTS: ActionListener that adds to category value
     private void buttonAddCategoryValueAction(JTextField textFieldAddCategoryValue, JButton buttonAddCategoryValue) {
         buttonAddCategoryValue.addActionListener(new ActionListener() {
             @Override
@@ -227,6 +263,7 @@ public class GUI {
         });
     }
 
+    // EFFECTS: ActionListener that displays logs
     private void buttonDisplayAction(JButton buttonDisplay, JLabel labelLogs) {
         buttonDisplay.addActionListener(new ActionListener() {
             @Override
@@ -238,6 +275,7 @@ public class GUI {
         });
     }
 
+    // EFFECTS: updates the list of logs created
     private void updateLogs(JLabel labelLogs) {
         // Label for logs
         frame.add(labelLogs);
@@ -257,6 +295,7 @@ public class GUI {
         labelLogs.setText("<html>" + logsTotal + "</html>");
     }
 
+    // EFFECTS: displays logs around the stats circle
     private void updateStats() {
         double centerX = circleX + circleWidth / 2;
         double centerY = circleY + circleHeight / 2;
@@ -280,6 +319,7 @@ public class GUI {
         frame.repaint();
     }
 
+    // EFFECTS: ActionListener that creates new log
     private void buttonNewLogAction(JButton buttonNewLog) {
         // Add an ActionListener to the button
         buttonNewLog.addActionListener(new ActionListener() {
@@ -291,6 +331,7 @@ public class GUI {
         });
     }
 
+    // EFFECTS: ActionListener that creates category
     private void buttonNewCategoryAction(JTextField textFieldNewCategory, JLabel labelCategory,
                                          JButton buttonNewCategory) {
         // Add an ActionListener to the button
@@ -310,11 +351,12 @@ public class GUI {
         });
     }
 
+    // EFFECTS: creates a cirlce which is the stats circle
     private void createStatCircle(JFrame frame, int circleX, int circleY, int circleWidth, int circleHeight) {
         Circle circle = new Circle();
         frame.add(circle, BorderLayout.CENTER);
         circle.setBounds(circleX, circleY, circleWidth, circleHeight);
-        circle.setBackground(Color.WHITE);
+        // circle.setBackground(Color.WHITE);
     }
 
     // EFFECTS: saves the record to file

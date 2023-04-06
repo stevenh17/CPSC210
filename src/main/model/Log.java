@@ -38,6 +38,7 @@ public class Log implements Writable {
     }
 
     public Boolean add(Category i) {
+        EventLog.getInstance().logEvent(new Event("User added category: " + i.getName()));
         return log.add(i);
     }
 

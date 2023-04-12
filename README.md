@@ -39,8 +39,11 @@ As a user, I want to see statistics on category growth rates.
 
 # Instructions for Grader
 
-- You can generate the first required action related to adding Xs to a Y by...
-- You can generate the second required action related to adding Xs to a Y by...
-- You can locate my visual component by...
-- You can save the state of my application by...
-- You can reload the state of my application by...
+- You can generate the first required action related to adding Xs to a Y by typing a number and then pressing the add button. 
+- You can generate the second required action related to adding Xs to a Y by typing a number and then pressing the sub button
+- You can locate my visual component by pressing display 
+- You can save the state of my application by pressing the save button 
+- You can reload the state of my application by pressing the load button
+
+# Phase 4: Task 3
+One idea I have is to replace my current log 

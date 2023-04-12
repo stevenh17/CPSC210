@@ -46,4 +46,6 @@ As a user, I want to see statistics on category growth rates.
 - You can reload the state of my application by pressing the load button
 
 # Phase 4: Task 3
-One idea I have is to replace my current log 
+One idea I have is to replace my record with a Singleton design pattern since I only ever need to instantiate my record once.
+Next, I think it would be a good idea to use a hash map instead of storing logs as an ArrayList. It would be faster to access
+and change category values within the hashmap.
